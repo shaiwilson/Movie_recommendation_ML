@@ -24,8 +24,28 @@ class User(db.Model):
     zipcode = db.Column(db.String(15), nullable=True)
 
 
-# Put your Movie and Rating model classes here.
+class Movie(db.Model):
+    """Film data."""
 
+    __tablename__ = "movies"
+
+    movie_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64), nullable=False)
+    released_at = db.Column(db.DateTime, nullable=False)
+    imdb_url = db.Column(db.String(64), nullable=False)
+
+# Q: is nullable=False correct?
+
+class Rating(db.Model):
+    """Ratings data."""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    
 
 ##############################################################################
 # Helper functions
@@ -34,7 +54,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/ratings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
     db.app = app
     db.init_app(app)
 
