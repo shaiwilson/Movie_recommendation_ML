@@ -15,6 +15,11 @@ db = SQLAlchemy()
 class User(db.Model):
     """User of ratings website."""
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<User user_id=%s email=%s>" % (self.user_id, self.email)
+
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -33,8 +38,6 @@ class Movie(db.Model):
     title = db.Column(db.String(64), nullable=False)
     released_at = db.Column(db.DateTime, nullable=False)
     imdb_url = db.Column(db.String(64), nullable=False)
-
-# Q: is nullable=False correct?
 
 class Rating(db.Model):
     """Ratings data."""
