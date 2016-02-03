@@ -24,6 +24,47 @@ def index():
 
     return render_template("homepage.html")
 
+@app.route("/users")
+def user_list():
+    """Show list of users."""
+
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
+
+@app.route('/signup', methods=["POST"])
+def signup():
+    """Sign up for an account."""
+
+    # check to see if the user exists in the database
+    # check by email
+        # if the user does not exist
+        # add them to the database
+
+        # otherwise
+        # return the string you have an account already!
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = User.query.filter_by(email=email).first()
+    # returns None if the user's email does not exist
+
+    print user
+
+#     jada = User(email="jada@gmail.com", password="abc123", age=25,
+# ...     zipcode="94103")
+
+
+
+    return render_template("signup.html")
+
+@app.route('/account_status')
+def account_status():
+    """Return user account status."""
+
+
+
+    return render_template("success.html")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
