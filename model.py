@@ -1,4 +1,5 @@
 """Models and database functions for Ratings project."""
+# Author : Erin Allard, Shai Wilson
 
 from flask_sqlalchemy import SQLAlchemy
 
