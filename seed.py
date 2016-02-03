@@ -45,11 +45,12 @@ def load_movies():
 
     Movie.query.delete()
 
-    for row in open("seed_data/u.item"):
+    for i, row in enumerate(open("seed_data/u.item")):
         row = row.rstrip()
         split_row = row.split("|")
-        movie_id, title, released_str, imdb_url = split_row[:4]
+        movie_id, title, released_str, junk, imdb_url = split_row[:5]
 
+        # Remove the (YEAR) from the end of the title.
         title = title[:-7]
 
         if released_str:
@@ -57,12 +58,15 @@ def load_movies():
         else:
             released_at = None
 
-        movie = Movie(movie_id=movie_id,
-                    title=title,
+        movie = Movie(title=title,
                     released_at=released_at,
                     imdb_url=imdb_url)
 
         db.session.add(movie)
+
+        # provide some sense of progress
+        if i % 100 == 0:
+            print i
 
     db.session.commit()
 
@@ -77,7 +81,13 @@ def load_ratings():
 
     for row in open("seed_data/u.data"):
         row = row.rstrip()
+
+        # _ is the timestamp
         user_id, movie_id, score, _ = row.split("\t")
+
+        user_id = int(user_id)
+        movie_id = int(movie_id)
+        score = int(score)
 
         rating = Rating(user_id=user_id,
                     movie_id=movie_id,
