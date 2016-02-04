@@ -5,7 +5,11 @@
 </head>
 
 <body>
-    
+    <form action="/logout">
+        <input type="submit" value="Logout">
+    </form>
+
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>

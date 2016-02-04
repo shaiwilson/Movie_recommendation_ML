@@ -61,19 +61,31 @@ def is_logged_in():
     password = request.form.get("password")
 
     email_in_DB = User.query.filter_by(email=email).first()
-    print "check_email: ", email_in_DB
 
     if email_in_DB:
         check_password = User.query.filter(User.password==password, User.email==email).first()
-        print "check_password: ", check_password.password
-        
-    return render_template("homepage.html")
+        session['current_user'] = check_password.user_id
+        # print session['current_user']
+        # Show user success message on next page load
+        flash("Successfully logged in!")
+    else:
+        flash("Hey! You're user_name or password is incorrect.")
 
-# TODO:
-# We finished our login in form!
-# Error handle when user does not enter the correct password
-#   return user to the login page
-#   show a flash message that the user entered an incorrect password
+    # Redirect to home page
+    return redirect("/")
+
+@app.route('/logout')
+def logout():
+    """Logout to an existing account."""
+
+    print session['current_user'] 
+    del session['current_user'] 
+
+    flash("Successfully logged out!")
+
+    # Redirect to home page
+    return redirect("/")
+
 
 # More GENERAL TODO:
     # Where we left off: added flask message to base.html
