@@ -90,18 +90,10 @@ def logout():
     return redirect("/")
 
 
-# More GENERAL TODO:
-    # Where we left off: added flask message to base.html
-    # when the user logs in successfully, show a flash message of success on the user_list.html page
-    # when an existing user attempts to login, show a flash message that they already have an accout: see line 100S
-
-
 @app.route('/account_status', methods=["POST"])
 def account_status():
     """Return user account status."""
 
-    # logic for default account status
-    account_descrip = "Thanks! We have successfully created your account."
     email = request.form.get("email")
     password = request.form.get("password")
     age = request.form.get("age")
@@ -109,19 +101,16 @@ def account_status():
 
     is_user = User.query.filter_by(email=email).first()
 
-    if is_user != None:
-        account_descrip = "Uh oh! You are already in the database!"  
-        return account_descrip
-        # further, redirect to login page
-        # show a flash message that they already have an account
-    else:      
+    if is_user != None:  
+        flash("Uh oh! You are already in the database!")
+    else:     
+        flash("Thanks! We have successfully created your account.") 
         add_new_user = User(email=email, password=password, age=age, zipcode=zipcode)
         db.session.add(add_new_user)
         db.session.commit()
 
     return render_template("status.html",
-                            user=add_new_user,
-                            description=account_descrip)
+                            user=add_new_user)
 
 
 if __name__ == "__main__":
