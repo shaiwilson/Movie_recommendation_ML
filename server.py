@@ -76,12 +76,15 @@ def is_logged_in():
 
 @app.route('/logout')
 def logout():
-    """Logout to an existing account."""
-
-    print session['current_user'] 
-    del session['current_user'] 
-
-    flash("Successfully logged out!")
+    """Logout to an existing account.""" 
+    
+    if 'current_user' not in session:
+        print"hip hip hoorrraayy!! I'm EMPTY."
+        flash("Hey! You're not even signed in!!!")
+    else:
+        print "The current_user: ", session['current_user']
+        del session['current_user'] 
+        flash("Successfully logged out!")
 
     # Redirect to home page
     return redirect("/")
