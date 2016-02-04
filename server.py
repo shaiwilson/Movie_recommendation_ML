@@ -24,6 +24,8 @@ def index():
 
     return render_template("homepage.html")
 
+
+
 @app.route("/users")
 def user_list():
     """Show list of users."""
@@ -31,40 +33,42 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
+
+
 @app.route('/signup', methods=["POST"])
 def signup():
     """Sign up for an account."""
 
-    # check to see if the user exists in the database
-    # check by email
-        # if the user does not exist
-        # add them to the database
-
-        # otherwise
-        # return the string you have an account already!
-
-    email = request.form.get("email")
-    password = request.form.get("password")
-
-    user = User.query.filter_by(email=email).first()
-    # returns None if the user's email does not exist
-
-    print user
-
-#     jada = User(email="jada@gmail.com", password="abc123", age=25,
-# ...     zipcode="94103")
-
-
 
     return render_template("signup.html")
+
+
 
 @app.route('/account_status')
 def account_status():
     """Return user account status."""
 
+    # logic for default account status
+    account_descrip = "Thanks! We have successfully created your account."
 
+    email = request.form.get("email")
+    password = request.form.get("password")
+    age = request.form.get("age")
+    zipcode = request.form.get("zipcode")
 
-    return render_template("success.html")
+    is_user = User.query.filter_by(email=email).first()
+
+    if is_user != None:
+        account_descrip = "Uh oh! You are already in the database!"  
+    else:      
+        add_new_user = User(email=email, password=password, age=age, zipcode=zipcode)
+        db.session.add(add_new_user)
+        db.session.commit()
+
+    return render_template("status.html",
+                            user=add_new_user,
+                            description=account_descrip)
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
