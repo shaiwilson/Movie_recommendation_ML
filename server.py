@@ -44,6 +44,43 @@ def signup():
 
 
 
+@app.route('/login')
+def login():
+    """Login to an existing account."""
+
+
+    return render_template("login.html")
+
+
+
+@app.route('/logged_in', methods=["POST"])
+def is_logged_in():
+    """Check to see if a user is in the database."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    email_in_DB = User.query.filter_by(email=email).first()
+    print "check_email: ", email_in_DB
+
+    if email_in_DB:
+        check_password = User.query.filter(User.password==password, User.email==email).first()
+        print "check_password: ", check_password.password
+        
+    return render_template("homepage.html")
+
+# TODO:
+# We finished our login in form!
+# Error handle when user does not enter the correct password
+#   return user to the login page
+#   show a flash message that the user entered an incorrect password
+
+# More GENERAL TODO:
+    # Where we left off: added flask message to base.html
+    # when the user logs in successfully, show a flash message of success on the user_list.html page
+    # when an existing user attempts to login, show a flash message that they already have an accout: see line 100S
+
+
 @app.route('/account_status', methods=["POST"])
 def account_status():
     """Return user account status."""
@@ -60,8 +97,8 @@ def account_status():
     if is_user != None:
         account_descrip = "Uh oh! You are already in the database!"  
         return account_descrip
-        # further study, render movies page and show a flash message that 
-        # they are already a user who is now logged in 
+        # further, redirect to login page
+        # show a flash message that they already have an account
     else:      
         add_new_user = User(email=email, password=password, age=age, zipcode=zipcode)
         db.session.add(add_new_user)
