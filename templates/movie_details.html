@@ -7,4 +7,25 @@
       Imbd Url: {{ display_movie_url }}
     </ul>
 
+    <div>
+    {% if 'current_user' in session %}
+        <form action="/new_rating" method="POST">
+            <input type="radio" name="rating" value="1"> 1 
+            <input type="radio" name="rating" value="2"> 2 
+            <input type="radio" name="rating" value="3"> 3 
+            <input type="radio" name="rating" value="4"> 4 
+            <input type="radio" name="rating" value="5"> 5 <br>
+            <input type="submit" value="Submit">
+        </form>
+    {% endif %}
+    </div>
+
+    {% for rating in ratings %}
+          <li>
+            {{ rating.score }}
+          </li>
+    {% endfor %}
+
+  
+
 {% endblock %}

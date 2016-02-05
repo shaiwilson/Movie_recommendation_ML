@@ -6,10 +6,13 @@
       {% for movie in movies %}
           <li>
               <a href="/movies/{{ movie.movie_id }}">
-                ({{ movie.movie_id }})
+                {{ movie.title }}
               </a>
           </li>
       {% endfor %}
     </ul>
 
 {% endblock %}
+
+<!-- Add a Jinja for-loop to sort the input list of movie titles by ABC? 
+Or should we do this with SQLAlchemy in the server.py file? -->

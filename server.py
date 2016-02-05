@@ -142,6 +142,51 @@ def show_user(user_id):
                            display_user_age=user_age)
 
 
+
+@app.route("/movies")
+def movie_list():
+    """Show list of movies."""
+
+    movies = Movie.query.all()
+    return render_template("movies_list.html", movies=movies)
+
+
+@app.route("/movies/<int:movie_id>")
+def show_movie(movie_id):
+    """Return page showing the details of a given movie."""
+
+    movie = Movie.query.get(movie_id)
+    movie_id = movie.movie_id
+    movie_title = movie.title
+    movie_url = movie.imdb_url
+
+    # TODO
+    # Show a list of ratings for a given movie
+    # add a form the this page so that a logged in user can update their ratings for this film
+    # ratings = Rating.query.get()
+    ratings = movie.ratings
+
+    return render_template("movie_details.html",
+                           display_movie_id=movie_id,
+                           display_movie_title=movie_title,
+                           display_movie_url=movie_url,
+                           ratings=ratings)
+
+
+@app.route('/new_rating', methods=["POST"])
+def add_new_rating():
+    """Check to see if a rating is in the database."""
+
+    rating = request.form.get("rating")
+
+    movies = Movie.query.all()
+
+
+    # Redirect to home page
+    return redirect("/")
+
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
