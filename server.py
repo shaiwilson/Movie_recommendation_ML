@@ -173,13 +173,16 @@ def show_movie(movie_id):
                            ratings=ratings)
 
 
-@app.route('/new_rating', methods=["POST"])
-def add_new_rating():
+@app.route('/new_rating/<int:movie_id>', methods=["POST"])
+def add_new_rating(movie_id):
     """Check to see if a rating is in the database."""
 
     rating = request.form.get("rating")
+    print movie_id
 
-    movies = Movie.query.all()
+    # check if the user_id and the movie_id are in one record
+    # update the score field
+    # other wise add new
 
 
     # Redirect to home page
