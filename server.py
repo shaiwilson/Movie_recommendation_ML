@@ -31,7 +31,7 @@ def user_list():
     """Show list of users."""
 
     users = User.query.all()
-    return render_template("user_list.html", users=users)
+    return render_template("users_list.html", users=users)
 
 
 
@@ -79,7 +79,7 @@ def logout():
     """Logout to an existing account.""" 
     
     if 'current_user' not in session:
-        print"hip hip hoorrraayy!! I'm EMPTY."
+        # print"hip hip hoorrraayy!! I'm EMPTY."
         flash("Hey! You're not even signed in!!!")
     else:
         print "The current_user: ", session['current_user']
@@ -111,6 +111,31 @@ def account_status():
 
     return render_template("status.html",
                             user=add_new_user)
+
+
+
+@app.route('/user_list')
+def show_users():
+    """Show all users with accounts."""
+
+
+    return render_template("login.html")
+
+
+
+@app.route("/users/<int:user_id>")
+def show_user(user_id):
+    """Return page showing the details of a given user."""
+
+    user = User.query.get(user_id)
+    user_id = user.user_id
+    user_zipcode = user.zipcode
+    user_age = user.age
+
+    return render_template("user_details.html",
+                           display_user_id=user_id,
+                           display_user_zipcode=user_zipcode,
+                           display_user_age=user_age)
 
 
 if __name__ == "__main__":
