@@ -62,17 +62,21 @@ def is_logged_in():
 
     email_in_DB = User.query.filter_by(email=email).first()
 
+
     if email_in_DB:
         check_password = User.query.filter(User.password==password, User.email==email).first()
         session['current_user'] = check_password.user_id
+        user_id = check_password.user_id
+        print "user_id", user_id
         # print session['current_user']
         # Show user success message on next page load
         flash("Successfully logged in!")
+        return redirect("/users/%s" % user_id)
     else:
         flash("Hey! You're user_name or password is incorrect.")
+        return redirect("/")
 
-    # Redirect to home page
-    return redirect("/")
+
 
 @app.route('/logout')
 def logout():
