@@ -164,21 +164,37 @@ def show_movie(movie_id):
     # Show a list of ratings for a given movie
     # add a form the this page so that a logged in user can update their ratings for this film
     # ratings = Rating.query.get()
-    ratings = movie.ratings
+    movie_ratings = movie.ratings
+
+    user_id = session['current_user']
+    if user_id:
+        user_rating = Rating.query.filter_by(
+        movie_id=movie_id, user_id=user_id).first()
+    else:
+        user_rating = None
+
 
     return render_template("movie_details.html",
                            display_movie_id=movie_id,
                            display_movie_title=movie_title,
                            display_movie_url=movie_url,
-                           ratings=ratings)
+                           movie_rating=movie_ratings,
+                           user_rating=user_rating)
 
 
-@app.route('/new_rating/<int:movie_id>', methods=["POST"])
-def add_new_rating(movie_id):
+@app.route('/new_rating', methods=["POST"])
+def add_new_rating():
     """Check to see if a rating is in the database."""
 
     rating = request.form.get("rating")
     print movie_id
+
+    user_id = session["user_id"]
+    movie_id = request.form.get("movie_id")
+
+    existing_rating = Rating.query.filter(Rating.user_id == user_id, 
+                                          Rating.movie_id == movie_id).all()
+    
 
     # check if the user_id and the movie_id are in one record
     # update the score field
