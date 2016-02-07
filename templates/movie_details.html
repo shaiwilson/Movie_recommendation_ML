@@ -4,7 +4,7 @@
     <h2>Details for Movies #{{ display_movie_id }}</h2>
       Title: {{ display_movie_title }}
     <ul>
-      <li>Average Rating:
+      <li>Average Rating: 
       </li>
       <li> 
         {% if user_rating %}
@@ -15,16 +15,11 @@
       </li>
 
     </ul>
-
     <div class ="new_rating">
     {% if 'current_user' in session %}
         <form action="/new_rating" method="POST">
-            <input type="radio" name="rating" value="1"> 1 
-            <input type="radio" name="rating" value="2"> 2 
-            <input type="radio" name="rating" value="3"> 3 
-            <input type="radio" name="rating" value="4"> 4 
-            <input type="radio" name="rating" value="5"> 5 <br>
-            <input type="hidden" name="movie_id" value={{ "display_movie_id" }}>
+            <input type="number" min="1" max="5" name="new_rating" placeholder="1-5"> 
+            <input type="hidden" name="movie_id" value="{{ display_movie_id }}">
             <input type="submit" value="Submit">
         </form>
     {% endif %}

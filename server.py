@@ -160,10 +160,6 @@ def show_movie(movie_id):
     movie_title = movie.title
     movie_url = movie.imdb_url
 
-    # TODO
-    # Show a list of ratings for a given movie
-    # add a form the this page so that a logged in user can update their ratings for this film
-    # ratings = Rating.query.get()
     movie_ratings = movie.ratings
 
     user_id = session['current_user']
@@ -185,25 +181,35 @@ def show_movie(movie_id):
 @app.route('/new_rating', methods=["POST"])
 def add_new_rating():
     """Check to see if a rating is in the database."""
-
-    rating = request.form.get("rating")
-    print movie_id
-
-    user_id = session["user_id"]
     movie_id = request.form.get("movie_id")
+    movie = Movie.query.get(movie_id)
+    movie_title = movie.title
+    rating = request.form.get("rating")
+    user_id = session['current_user']
+
+    print rating
 
     existing_rating = Rating.query.filter(Rating.user_id == user_id, 
                                           Rating.movie_id == movie_id).all()
-    
 
-    # check if the user_id and the movie_id are in one record
-    # update the score field
-    # other wise add new
+    if len(existing_rating) == 0:
+            new_rating = Rating(score = rating,
+                                user_id = user_id,
+                                movie_id = movie_id)
+            db.session.add(new_rating)
+        
+    else:
+        existing_rating[0].score = rating
+        db.session.commit()
+        flash("Your rating was submitted.")
 
+    # return render_template("movie_details.html",
+    #                        display_movie_id=movie_id,
+    #                        display_movie_title=movie_title,
+    #                        movie_rating=movie_ratings,
+    #                        user_rating=user_rating)
 
-    # Redirect to home page
-    return redirect("/")
-
+    return "ok"
 
 
 if __name__ == "__main__":
