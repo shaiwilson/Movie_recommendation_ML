@@ -186,6 +186,7 @@ def add_new_rating():
     movie_title = movie.title
     rating = request.form.get("new_rating")
     user_id = session['current_user']
+    movie_ratings = movie.ratings
 
     existing_rating = Rating.query.filter(Rating.user_id == user_id, 
                                           Rating.movie_id == movie_id).all()
@@ -201,11 +202,11 @@ def add_new_rating():
         db.session.commit()
         flash("Your rating was submitted.")
 
-    # return render_template("movie_details.html",
-    #                        display_movie_id=movie_id,
-    #                        display_movie_title=movie_title,
-    #                        movie_rating=movie_ratings,
-    #                        user_rating=user_rating)
+    return render_template("movie_details.html",
+                           display_movie_id=movie_id,
+                           display_movie_title=movie_title,
+                           movie_rating=movie_ratings,
+                           user_rating=rating)
 
     return "ok"
 
