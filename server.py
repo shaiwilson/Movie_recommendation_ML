@@ -184,10 +184,8 @@ def add_new_rating():
     movie_id = request.form.get("movie_id")
     movie = Movie.query.get(movie_id)
     movie_title = movie.title
-    rating = request.form.get("rating")
+    rating = request.form.get("new_rating")
     user_id = session['current_user']
-
-    print rating
 
     existing_rating = Rating.query.filter(Rating.user_id == user_id, 
                                           Rating.movie_id == movie_id).all()
