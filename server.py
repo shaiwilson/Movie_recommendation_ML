@@ -170,6 +170,20 @@ def show_movie(movie_id):
     else:
         user_rating = None
 
+    # Get average rating of movie
+
+    rating_scores = [r.score for r in movie.ratings]
+    avg_rating = float(sum(rating_scores)) / len(rating_scores)
+
+    prediction = None
+
+    # Prediction code: only predict if the user hasn't rated it.
+
+    if (not user_rating) and user_id:
+        user = User.query.get(user_id)
+        if user:
+            prediction = user.predict_rating(movie)
+
 
     return render_template("movie_details.html",
                            display_movie_id=movie_id,
