@@ -63,12 +63,17 @@ class User(db.Model):
 
         similarities.sort(reverse=True)
 
+        if not similarities:
+                    return None
+
         numerator = sum([r.score * sim for sim, r in similarities])
         denominator = sum([sim for sim, r in similarities])
 
         return numerator / denominator
 
-    
+        # could do better to rescale rating system
+        # to between -1 and 1, use the negative coefficients, then rescale it back
+        # TODO : filter out the negative similarities
 
 
 
