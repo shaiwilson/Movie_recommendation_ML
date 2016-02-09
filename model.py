@@ -54,24 +54,22 @@ class User(db.Model):
     # the less accurate this prediction rating 
     # blend the results together by keeping track of        
     # how similar a user is, as well as their actual rating
+
     def predict_rating(self, movie):
-            """Predict user's rating of a movie."""
+        """Predict user's rating of a movie."""
 
-            other_ratings = movie.ratings
-            other_users = [ r.user for r in other_ratings ]
+        other_ratings = movie.ratings
 
-            similarities = [
-                (self.similarity(other_user), other_user)
-                for other_user in other_users
-            ]
+        similarities = [
+            (self.similarity(r.user), r)
+            for r in other_ratings
+        ]
 
-            similarities.sort(reverse=True)
-            sim, best_match_user = similarities[0]
+        similarities.sort(reverse=True)
+        sim, rating = similarities[0]
 
-            matched_rating = None
-            for rating in other_ratings:
-                if rating.user_id == best_match_user.user_id:
-                    return rating.score * sim
+        return rating.score * sim
+    
 
 
 
