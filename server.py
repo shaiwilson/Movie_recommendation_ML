@@ -190,7 +190,9 @@ def show_movie(movie_id):
                            display_movie_title=movie_title,
                            display_movie_url=movie_url,
                            movie_rating=movie_ratings,
-                           user_rating=user_rating)
+                           user_rating=user_rating,
+                           average=avg_rating,
+                           prediction=prediction)
 
 
 @app.route('/new_rating', methods=["POST"])
