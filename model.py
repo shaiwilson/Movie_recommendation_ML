@@ -49,7 +49,11 @@ class User(db.Model):
 
         else:
             return 0.0
-            
+
+    # the fewer ratings that you have,
+    # the less accurate this prediction rating 
+    # blend the results together by keeping track of        
+    # how similar a user is, as well as their actual rating
     def predict_rating(self, movie):
             """Predict user's rating of a movie."""
 
