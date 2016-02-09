@@ -1,4 +1,5 @@
 """Movie Ratings."""
+# Author : Erin Allard, Shai Wilson
 
 from jinja2 import StrictUndefined
 
