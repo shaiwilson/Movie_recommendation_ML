@@ -182,7 +182,6 @@ def show_movie(movie_id):
     if (not user_rating) and user_id:
         user = User.query.get(user_id)
         if user:
-            print user
             prediction = user.predict_rating(movie)
 
 

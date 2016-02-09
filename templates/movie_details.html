@@ -27,9 +27,9 @@
 
     <div class ="new_rating">
       <p>Average rating: {{ average }}</p>
-        {% if prediction %}
-      <p>We predict you will rate this movie {{ prediction }}.</p>
-        {% endif %}
+      {% if prediction %}
+        <p>We predict you will rate this movie {{ prediction }}.</p>
+      {% endif %}
     </div>
 
   <table>
