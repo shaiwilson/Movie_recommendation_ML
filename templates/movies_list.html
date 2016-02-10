@@ -2,15 +2,17 @@
 {% block content %}
 
     <h2>Movies</h2>
-    <ul>
+    <div id="movies-list" class="row">
       {% for movie in movies %}
-          <li>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 melon-summary">
+        <div class="well">
               <a href="/movies/{{ movie.movie_id }}">
                 {{ movie.title }}
               </a>
-          </li>
+              </div>
+        </div>
       {% endfor %}
-    </ul>
+    </div>
 
 {% endblock %}
 
