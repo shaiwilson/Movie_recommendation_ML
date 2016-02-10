@@ -3,12 +3,20 @@
 
     <h2>Login</h2>
 
-    <form action="/logged_in" method="POST">
-        
-        <label>Enter your email: <input type="text" name="email"></input></label><br><br>
-        <label>Enter your password: <input type="text" name="password"></input></label><br><br>
+    <form class="form-signin" action="/logged_in" method="POST">
+        <h2 class="form-signin-heading">Please Login</h2>
 
-        <input type="submit" value="Submit">
+        <div class="form-group">
+            <label>Enter your email: <input type="text" name="email"></input></label>
+        </div>
+
+        <div class="form-group">
+            <label>Enter your password: <input type="text" name="password"></input></label>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In
+        </button>
+        
     </form>
 
 {% endblock %}
