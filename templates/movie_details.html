@@ -22,6 +22,17 @@
              <p>We predict you will rate this movie {{ prediction }}.</p>
          {% endif %}
 
+          {% if eye_rating %}
+            <h2>The Judgmental Eye</h2>
+              <p>Eye Rating: <b>{{ eye_rating }}</b></p>
+              {% if difference %}
+                  <p>Difference: <b>{{ difference }}</b></p>
+              {% endif %}
+              {% if beratement %}
+                  <p>The Eye says: <b>{{ beratement }}</b></p>
+              {% endif %}
+          {% endif %}
+
       {% if movie.ratings %}
       <table>
           <tr>
