@@ -1,48 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h2>Details for Movies #{{ display_movie_id }}</h2>
-      Title: {{ display_movie_title }}
-    <ul>
-      <li>Average Rating: 
-      </li>
-      <li> 
-        {% if user_rating %}
-          You rated this movie {{ user_rating }}
-        {%else %}
-          You did not rate this movie, yet.
-        {% endif %}
-      </li>
-
-    </ul>
-    <div class ="new_rating">
-    {% if 'current_user' in session %}
-        <form action="/new_rating" method="POST">
+    <h2>Details for Movies</h2>
+      Title: {{ movie.title }}
+        {% if "current_user" in session %}
+          <h2>Your Rating</h2>
+            {% if user_rating %}
+              <p>You currently rate this a {{ user_rating.score }}</p>
+            {%else %}
+              <p>You did not rate this movie, yet.</p>
+            {% endif %}
+             <form action="/new_rating" method="POST">
             <input type="number" min="1" max="5" name="new_rating" placeholder="1-5"> 
-            <input type="hidden" name="movie_id" value="{{ display_movie_id }}">
+            <input type="hidden" name="movie_id" value="{{ movie.movie_id }}">
             <input type="submit" value="Submit">
         </form>
-    {% endif %}
-    </div>
+        {% endif %}
 
-    <div class ="new_rating">
-      <p>Average rating: {{ average }}</p>
-      {% if prediction %}
-        <p>We predict you will rate this movie {{ prediction }}.</p>
+        <p>Average rating: {{ average }}</p>
+        {% if prediction %}
+             <p>We predict you will rate this movie {{ prediction }}.</p>
+         {% endif %}
+
+      {% if movie.ratings %}
+      <table>
+          <tr>
+            <th> Ratings </th>
+          </tr>
+        {% for rating in movie.ratings %}
+          <tr>
+            <td>
+              <a href="/users/{{ rating.user_id }}">{{ rating.user_id }}</a>
+              rated {{ rating.score }}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
       {% endif %}
-    </div>
-
-  <table>
-      <tr>
-        <th> Ratings </th>
-      </tr>
-    {% for rating in movie_rating %}
-      <tr>
-        <td>
-            {{ rating.score }}
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
 
 {% endblock %}

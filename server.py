@@ -133,14 +133,12 @@ def show_user(user_id):
     """Return page showing the details of a given user."""
 
     user = User.query.get(user_id)
-    user_id = user.user_id
-    user_zipcode = user.zipcode
-    user_age = user.age
+    # user_id = user.user_id
+    # user_zipcode = user.zipcode
+    # user_age = user.age
 
     return render_template("user_details.html",
-                           display_user_id=user_id,
-                           display_user_zipcode=user_zipcode,
-                           display_user_age=user_age)
+                           user=user)
 
 
 
@@ -157,16 +155,13 @@ def show_movie(movie_id):
     """Return page showing the details of a given movie."""
 
     movie = Movie.query.get(movie_id)
-    movie_id = movie.movie_id
-    movie_title = movie.title
-    movie_url = movie.imdb_url
 
-    movie_ratings = movie.ratings
+    user_id = session.get("current_user")
 
-    user_id = session['current_user']
     if user_id:
         user_rating = Rating.query.filter_by(
-        movie_id=movie_id, user_id=user_id).first()
+            movie_id=movie_id, user_id=user_id).first()
+
     else:
         user_rating = None
 
@@ -183,16 +178,69 @@ def show_movie(movie_id):
         user = User.query.get(user_id)
         if user:
             prediction = user.predict_rating(movie)
+    print prediction
 
+    # Either use the prediction or their real rating
 
-    return render_template("movie_details.html",
-                           display_movie_id=movie_id,
-                           display_movie_title=movie_title,
-                           display_movie_url=movie_url,
-                           movie_rating=movie_ratings,
-                           user_rating=user_rating,
-                           average=avg_rating,
-                           prediction=prediction)
+    if prediction:
+        # User hasn't scored; use our prediction if we made one
+        effective_rating = prediction
+
+    elif user_rating:
+        # User has already scored for real; use that
+        effective_rating = user_rating.score
+
+    else:
+        # User hasn't scored, and we couldn't get a prediction
+        effective_rating = None
+
+    # # Get the eye's rating, either by predicting or using real rating
+
+    # the_eye = User.query.filter_by(email="the-eye@of-judgment.com").one()
+    # eye_rating = Rating.query.filter_by(
+    #     user_id=the_eye.user_id, movie_id=movie.movie_id).first()
+
+    # if eye_rating is None:
+    #     eye_rating = the_eye.predict_rating(movie)
+
+    # else:
+    #     eye_rating = eye_rating.score
+
+    # if eye_rating and effective_rating:
+    #     difference = abs(eye_rating - effective_rating)
+
+    # else:
+    #     # We couldn't get an eye rating, so we'll skip difference
+    #     difference = None
+
+    # # Depending on how different we are from the Eye, choose a message
+
+    # BERATEMENT_MESSAGES = [
+    #     "I suppose you don't have such bad taste after all.",
+    #     "I regret every decision that I've ever made that has brought me" +
+    #         " to listen to your opinion.",
+    #     "Words fail me, as your taste in movies has clearly failed you.",
+    #     "That movie is great. For a clown to watch. Idiot.",
+    #     "Words cannot express the awfulness of your taste."
+    # ]
+
+    # if difference is not None:
+    #     beratement = BERATEMENT_MESSAGES[int(difference)]
+
+    # else:
+    #     beratement = None
+
+    return render_template(
+        "movie_details.html",
+        movie=movie,
+        user_rating=user_rating,
+        average=avg_rating,
+        prediction=prediction,
+        # eye_rating=eye_rating,
+        # difference=difference,
+        # beratement=beratement
+        )
+
 
 
 @app.route('/new_rating', methods=["POST"])
@@ -213,19 +261,14 @@ def add_new_rating():
                                 user_id = user_id,
                                 movie_id = movie_id)
             db.session.add(new_rating)
+            flash("Rating added.")
         
     else:
         existing_rating[0].score = rating
-        db.session.commit()
         flash("Your rating was submitted.")
 
-    return render_template("movie_details.html",
-                           display_movie_id=movie_id,
-                           display_movie_title=movie_title,
-                           movie_rating=movie_ratings,
-                           user_rating=rating)
-
-    return "ok"
+    db.session.commit()
+    return redirect("/movies/%s" % movie_id)
 
 
 if __name__ == "__main__":
