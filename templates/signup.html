@@ -3,14 +3,26 @@
 
     <h2>Sign-Up</h2>
 
-    <form>
+    <form class="form-signin">
+        <h2 class="form-signin-heading">Please Sign Up</h2>
         
-        <label>Enter your email: <input type="text" name="email"></input></label><br><br>
-        <label>Create your password: <input type="text" name="password"></input></label><br><br>
-        <label>Enter your age: <input type="text" name="age"></input></label><br><br>
-        <label>Create your zipcode: <input type="text" name="zipcode"></input></label><br><br>
+        <div class="form-group">
+        <label>Enter your email: <input type="text" name="email"></input></label>
 
-        <input type="submit" value="Submit">
+        <div class="form-group">
+        <label>Create your password: <input type="text" name="password"></input></label>
+        </div>
+
+        <div class="form-group">
+        <label>Enter your age: <input type="text" name="age"></input></label>
+        </div>
+
+        <div class="form-group">
+        <label>Create your zipcode: <input type="text" name="zipcode"></input></label>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In
+        </button>
     </form>
 
 {% endblock %}
