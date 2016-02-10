@@ -1,19 +1,37 @@
 <!doctype html>
+
 <html>
 <head>
-  <title>Ratings</title>
+    <title>Ratings</title>
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/site.css"/>
 </head>
 
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+
+        <div class="navbar-header">
+            <!-- <img src="/static/img/ubermelon-logo.png"> -->
+            <a class="navbar-brand" href="/">Homepage</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form action="/logout">
+                        <input type="submit" value="Logout">
+                    </form>
+                </li>
+                <li><a href="/login">Log In</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
 <body>
-    <form action="/logout">
-        <input type="submit" value="Logout">
-    </form>
-
-    <a href="/login"> LOGIN </a>
-    <p></p>
-    <a href="/"> Home </a>
-
-
+  
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>
